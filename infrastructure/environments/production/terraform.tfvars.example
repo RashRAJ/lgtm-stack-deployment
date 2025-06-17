@@ -1,0 +1,48 @@
+# infrastructure/environments/production/terraform.tfvars.example
+# Copy this file to terraform.tfvars and fill in your values
+
+# Required: Your GCP Project ID
+project_id = "your-gcp-project-id"
+
+# Required: Your domain name (must exist in Cloud DNS)
+domain_name = "yourdomain.com"
+
+# Optional: Override default values
+project_name = "lgtm-stack"
+region       = "us-central1"
+zone         = "us-central1-a"
+
+# Network Configuration (optional - defaults are usually fine)
+# gke_subnet_cidr   = "10.0.0.0/24"
+# gke_pods_cidr     = "10.1.0.0/16"
+# gke_services_cidr = "10.2.0.0/20"
+
+# GKE Node Configuration
+initial_node_count = 2
+min_node_count     = 1
+max_node_count     = 4
+machine_type       = "e2-standard-4"
+disk_size_gb       = 100
+preemptible_nodes  = false  # Set to true for dev/test environments
+
+# Security: Restrict master access (recommended for production)
+# authorized_networks = [
+#   {
+#     cidr_block   = "YOUR_OFFICE_IP/32"
+#     display_name = "office"
+#   },
+#   {
+#     cidr_block   = "YOUR_CI_IP/32"
+#     display_name = "ci-system"
+#   }
+# ]
+
+# Storage Configuration
+gcs_location = "US"  # Options: US, EU, ASIA, or specific regions
+
+# Retention policies (in days)
+loki_retention_days  = 30   # Log retention
+mimir_retention_days = 90   # Metrics retention
+
+# DNS Configuration
+create_dns_zone = false  # Set to true if you need Terraform to create the zone

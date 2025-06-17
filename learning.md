@@ -28,10 +28,10 @@ This document serves as a learning journal to track insights, challenges, and kn
 - **Technology Choices:**
   - [x] IaC Tool Decision: Terraform because  Of familiarity And global adoption...
   - [x] GitOps Tool Decision: Argocd because relatively lightweight and highly secure approach to K8s deployments
-  - [ ] Ingress Controller Decision: [Controller] because...
+  - [ ] Ingress Controller Decision: [NGINX] because industry-standard with a large user base.
 
 ### Resources Used
-- [ ] [Resource 1 with link]
+- [ ] [Treafik vs Nginx](https://www.apptio.com/topics/kubernetes/devops-tools/traefik-vs-nginx/)
 - [ ] [Resource 2 with link]
 
 ### Challenges Encountered

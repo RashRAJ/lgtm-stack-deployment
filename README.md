@@ -43,11 +43,119 @@ We are implementing Grafana's LGTM (Loki, Grafana, Tempo, Mimir) stack to create
 
 ```
 .
-├── README.md                
-├── LEARNING.md              
-├── infrastructure/          
-│   ├── gcp/                
+├── README.md                           # This file
+├── LEARNING.md                         # Learning journal and notes
+├── .gitignore                          # Git ignore file
+├── .github/                            # GitHub specific files
+│   └── workflows/                      # GitHub Actions workflows
+│       ├── terraform-validate.yml      # Terraform validation
+│       └── argocd-sync-check.yml       # ArgoCD manifest validation
 │
+├── infrastructure/                     # Terraform IaC code
+│   ├── environments/                   # Environment-specific configurations
+│   │   └── production/                 # Production environment
+│   │       ├── main.tf                 # Main Terraform configuration
+│   │       ├── variables.tf            # Variable definitions
+│   │       ├── terraform.tfvars        # Variable values (gitignored)
+│   │       ├── terraform.tfvars.example # Example variable values
+│   │       ├── outputs.tf              # Output definitions
+│   │       ├── providers.tf            # Provider configurations
+│   │       ├── backend.tf              # Terraform state backend config
+│   │       └── versions.tf             # Terraform version constraints
+│   │
+│   └── modules/                        # Reusable Terraform modules
+│       ├── gcp-network/                # VPC and networking module
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   ├── outputs.tf
+│       │   └── README.md
+│       ├── gke-cluster/                # GKE cluster module
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   ├── outputs.tf
+│       │   ├── node-pools.tf
+│       │   ├── workload-identity.tf
+│       │   └── README.md
+│       ├── gcs-buckets/                # Google Cloud Storage module
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   ├── outputs.tf
+│       │   └── README.md
+│       ├── cloud-dns/                  # Cloud DNS configuration
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   ├── outputs.tf
+│       │   └── README.md
+│       └── iam/                        # IAM roles and policies
+│           ├── main.tf
+│           ├── variables.tf
+│           ├── outputs.tf
+│           └── README.md
+│
+├── kubernetes/                         # GitOps manifests for ArgoCD
+│   ├── bootstrap/                      # ArgoCD bootstrap configuration
+│   │   ├── argocd-namespace.yaml
+│   │   ├── argocd-install.yaml
+│   │   └── argocd-ingress.yaml
+│   ├── applications/                   # ArgoCD Application definitions
+│   │   ├── app-of-apps.yaml          # Root application
+│   │   ├── infrastructure-apps.yaml   # Infrastructure applications
+│   │   └── lgtm-apps.yaml            # LGTM stack applications
+│   ├── infrastructure/                 # Infrastructure components
+│   │   ├── nginx-ingress/
+│   │   │   ├── namespace.yaml
+│   │   │   ├── values.yaml
+│   │   │   └── helmrelease.yaml
+│   │   └── cert-manager/
+│   │       ├── namespace.yaml
+│   │       ├── values.yaml
+│   │       └── helmrelease.yaml
+│   └── lgtm-stack/                    # LGTM components
+│       ├── namespace.yaml             # lgtm namespace
+│       ├── grafana/
+│       │   ├── values.yaml
+│       │   ├── helmrelease.yaml
+│       │   ├── ingress.yaml
+│       │   └── dashboards/
+│       ├── loki/
+│       │   ├── values.yaml
+│       │   ├── helmrelease.yaml
+│       │   ├── ingress.yaml
+│       │   └── auth-proxy.yaml
+│       ├── mimir/
+│       │   ├── values.yaml
+│       │   ├── helmrelease.yaml
+│       │   └── storage-config.yaml
+│       ├── tempo/
+│       │   ├── values.yaml
+│       │   └── helmrelease.yaml
+│       └── collectors/
+│           ├── prometheus/
+│           ├── promtail/
+│           └── otel-collector/
+│
+├── scripts/                           # Automation and utility scripts
+│   ├── setup/
+│   │   ├── 01-prerequisites.sh       # Check and install prerequisites
+│   │   ├── 02-gcp-setup.sh          # GCP project setup
+│   │   ├── 03-terraform-init.sh     # Initialize Terraform
+│   │   └── 04-bootstrap-argocd.sh   # Bootstrap ArgoCD
+│   ├── validate/
+│   │   ├── terraform-validate.sh    # Validate Terraform code
+│   │   └── k8s-validate.sh         # Validate Kubernetes manifests
+│   └── utils/
+│       ├── generate-secrets.sh      # Generate required secrets
+│       ├── backup-dashboards.sh     # Backup Grafana dashboards
+│       └── test-endpoints.sh        # Test deployed endpoints
+│
+└── docs/                             # Additional documentation
+    ├── setup.md                      # Detailed setup instructions
+    ├── architecture.md               # Architecture decisions
+    ├── operations.md                 # Operational procedures
+    ├── troubleshooting.md           # Common issues and solutions
+    └── security.md                  # Security considerations
+
+```
 
 ## Getting Started
 
